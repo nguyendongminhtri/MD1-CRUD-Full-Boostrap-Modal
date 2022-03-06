@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        tr {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+        }
+        .part1 {
+            width: 350px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<!--<input type="text" id="create" >-->
+<!--<button onclick="createStudent()">Create Student</button>-->
+<h1 style="color: blue" align="center">STUDENT MANAGE</h1>
+<hr>
+<!-- Button trigger modal -->
+<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>-->
+<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Open modal for @fat</button>-->
+<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Open modal for @getbootstrap</button>-->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!--    <div class="modal-dialog" role="document">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="exampleModalLabel">New message</h5>-->
+<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                    <span aria-hidden="true">&times;</span>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                <form>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="recipient-name" class="col-form-label">Recipient:</label>-->
+<!--                        <input type="text" class="form-control" id="recipient-name">-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="message-text" class="col-form-label">Message:</label>-->
+<!--                        <textarea class="form-control" id="message-text"></textarea>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--                <button type="button" class="btn btn-primary">Send message</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
+
+<!-- Modal -->
+
+<hr>
+<span style="color: red" id="validate"></span>
+<div class="part1">
+    <div class="input-group mb-3">
+        <input id="create" type="text" class="form-control" placeholder="Name Student ..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <span onclick="createStudent()" style="background-color: royalblue; color: brown" class="input-group-text" id="basic-addon2">Create Student</span>
+    </div>
+    <!--<input type="text" id="search" oninput="actionSearch()">-->
+    <!--<button onclick="actionSearch()">search</button>-->
+    <div class="input-group rounded">
+        <input id="search" oninput="actionSearch()" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+        <span style="background-color: green" class="input-group-text border-0" id="search-addon">
+  <i style="color: red" class="bi bi-search-heart"></i>
+  </span>
+    </div>
+</div>
+
+<table class="table" border="2">
+    <tr class="table-danger">
+        <th>STT</th>
+        <th>Name</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    <tbody class="table-primary" id="drawTable">
+    <!--    <tr>-->
+    <!--        <td>1</td>-->
+    <!--        <td>Long</td>-->
+    <!--    </tr>-->
+    <!--    <tr>-->
+    <!--        <td>2</td>-->
+    <!--        <td>Quốc Anh</td>-->
+    <!--    </tr>-->
+    </tbody>
+
+</table>
+</body>
+</html>
+<script>
+    let studentList = ['Long','Quốc Anh','Huệ']
+    let studentSearchList = [];
+    function showListStudent() {
+        let drawTable = '';
+        for (let i = 0; i < studentList.length; i++) {
+            let j = i+1;
+            drawTable+= `<tr>
+                            <td>${j}</td>
+                            <td>${studentList[i]}</td>
+                            <td><button class="btn btn-primary" onclick="editStudent(${i})" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><i class="bi bi-pen"></i></button></td>
+                              <td><button class="btn btn-danger" onclick="deleteStudent(${i})"data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><i class="bi bi-trash3-fill"></i></button></td>
+                          </tr>`
+        }
+        document.getElementById('drawTable').innerHTML = drawTable;
+    }
+    showListStudent();
+    function editStudent(index) {
+        document.getElementById('exampleModal').innerHTML = `<div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Edit Student:</label>
+                        <input type="text" class="form-control" id="student-name" value="${studentList[index]}">
+                    </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="edit" type="button" class="btn btn-primary">Edit Student</button>
+            </div>
+        </div>
+    </div>`
+        // studentList[index] = editStudent;
+        // showListStudent();
+        $("#edit").click(function (){
+            let editStudent = $("#student-name").val();
+            if(editStudent===''){
+                document.getElementById('edit').innerHTML = '<button id="edit" type="button" class="btn btn-danger">The name Student is required! Please try again! </button>'
+                return;
+            }
+            studentList[index] = editStudent;
+            document.getElementById('validate').innerHTML = '<h1 style="color: blue">Edit Student Success!</h1>'
+            $('#exampleModal').modal('toggle');
+            showListStudent();
+            // document.getElementById('edit').innerHTML = '<button id="edit" type="button" class="btn btn-success">Success!!!!!</button>'
+        })
+    }
+    function deleteStudent(index) {
+        document.getElementById('exampleModal').innerHTML = `<div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-footer">
+                <label>Are You Sure Delete? ${studentList[index]}</label>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button id="delete" type="button" class="btn btn-danger">Yes</button>
+            </div>
+        </div>
+    </div>`
+        $('#delete').click(function () {
+            studentList.splice(index,1);
+            document.getElementById('delete').innerHTML = `<button id="delete" type="button" class="btn btn-danger">Delete Success!!</button>`
+            $('#exampleModal').modal('toggle');
+            showListStudent();
+        })
+        // studentList.splice(index,1);
+        // showListStudent();
+    }
+    function createStudent() {
+        let newStudent = document.getElementById('create').value;
+        if(newStudent===''){
+            document.getElementById('validate').innerHTML = 'The name Student is required! Please try again!'
+            return;
+        } else {
+            studentList.push(newStudent);
+            document.getElementById('validate').innerHTML = '<span style="color: green">Create Student Success!</span>'
+            showListStudent();
+        }
+
+    }
+    function showListSearch() {
+        let drawTable = '';
+        for (let i = 0; i < studentSearchList.length; i++) {
+            let j = i+1;
+            drawTable+= `<tr>
+                            <td>${j}</td>
+                            <td>${studentSearchList[i]}</td>
+                            <td><button onclick="editStudent(${i})">Edit</button></td>
+                              <td><button onclick="deleteStudent(${i})">Delete</button></td>
+                          </tr>`
+        }
+        document.getElementById('drawTable').innerHTML = drawTable;
+    }
+    function actionSearch() {
+        studentSearchList.splice(0,studentSearchList.length)
+        let search = document.getElementById('search').value;
+      let searchTLC =   search.toLowerCase();
+        console.log('search = ', searchTLC)
+        if(search===''){
+            showListStudent();
+            return;
+        }
+        let studentListTLC = []
+        for (let i = 0; i < studentList.length; i++) {
+           studentListTLC.push(studentList[i].toLowerCase())
+        }
+            for (let i = 0; i < studentListTLC.length; i++) {
+                console.log('i = ',i)
+                console.log('check ', searchTLC === studentListTLC[i])
+                if(searchTLC===studentListTLC[i]){
+                    studentSearchList.push(studentList[i])
+                }
+            }
+            showListSearch()
+
+    }
+</script>
